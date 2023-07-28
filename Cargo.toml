@@ -39,7 +39,7 @@ std = [
 	"sp-std/std",
 	"sp-arithmetic/std",
 	"sp-io/std",
-  "sp-core/std",
+	"sp-core/std",
 	"sp-runtime/std",
 	"sp-weights/std",
 	"frame-support/std",
