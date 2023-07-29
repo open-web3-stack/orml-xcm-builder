@@ -2,7 +2,7 @@
 members = [
   "kusama",
   "polkadot",
-  "general",
+  "shared",
 ]
 
 [workspace.package]

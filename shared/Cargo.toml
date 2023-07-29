@@ -1,5 +1,5 @@
 [package]
-name = "orml-xcm-builder"
+name = "orml-xcm-builder-shared"
 description = "Opinionated community repository for XCM types. General types independent of the relay."
 edition.workspace = true
 version.workspace = true
