@@ -3,9 +3,9 @@ use parity_scale_codec::{Decode, Encode};
 use sp_core::H256;
 use sp_io::hashing::blake2_256;
 use sp_runtime::traits::TrailingZeroInput;
-use sp_std::{borrow::Borrow, marker::PhantomData};
+use sp_std::marker::PhantomData;
 use xcm::latest::prelude::*;
-use xcm_executor::traits::{Convert, ConvertOrigin};
+use xcm_executor::traits::{ConvertLocation, ConvertOrigin};
 
 /// Tinkernet ParaId used when matching Multisig MultiLocations.
 const TINKERNET_PARA_ID: u32 = 2125;
@@ -33,11 +33,11 @@ pub fn derive_tinkernet_multisig<AccountId: Decode>(id: u128) -> Result<AccountI
 
 /// Convert a Tinkernet Multisig `MultiLocation` value into a local `AccountId`.
 pub struct TinkernetMultisigAsAccountId<AccountId>(PhantomData<AccountId>);
-impl<AccountId: Decode + Clone> Convert<MultiLocation, AccountId>
+impl<AccountId: Decode + Clone> ConvertLocation<AccountId>
     for TinkernetMultisigAsAccountId<AccountId>
 {
-    fn convert_ref(location: impl Borrow<MultiLocation>) -> Result<AccountId, ()> {
-        match location.borrow() {
+    fn convert_location(location: &MultiLocation) -> Option<AccountId> {
+        match location {
             MultiLocation {
                 // Parents will match from the perspective of the relay or one of it's child parachains.
                 parents: 0 | 1,
@@ -48,8 +48,8 @@ impl<AccountId: Decode + Clone> Convert<MultiLocation, AccountId>
                         // Index from which the multisig account is derived.
                         GeneralIndex(id),
                     ),
-            } => derive_tinkernet_multisig(*id),
-            _ => Err(()),
+            } => derive_tinkernet_multisig(*id).ok(),
+            _ => None,
         }
     }
 }
@@ -102,7 +102,7 @@ mod tests {
     #[test]
     fn accountid32() {
         assert_eq!(
-            TinkernetMultisigAsAccountId::<AccountId32>::convert(MultiLocation {
+            TinkernetMultisigAsAccountId::<AccountId32>::convert_location(&MultiLocation {
                 parents: 1,
                 interior: X3(Parachain(2125), PalletInstance(71), GeneralIndex(0)),
             })
@@ -118,7 +118,7 @@ mod tests {
     #[test]
     fn accountid20() {
         assert_eq!(
-            TinkernetMultisigAsAccountId::<[u8; 20]>::convert(MultiLocation {
+            TinkernetMultisigAsAccountId::<[u8; 20]>::convert_location(&MultiLocation {
                 parents: 1,
                 interior: X3(Parachain(2125), PalletInstance(71), GeneralIndex(1)),
             })
