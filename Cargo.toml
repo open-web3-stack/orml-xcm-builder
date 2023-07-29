@@ -1,0 +1,30 @@
+[workspace]
+members = [
+  "kusama",
+  "polkadot",
+  "shared",
+]
+
+[workspace.package]
+version = "0.9.43"
+edition = "2021"
+repository = "https://github.com/open-web3-stack/orml-xcm-builder.git"
+
+[workspace.dependencies]
+parity-scale-codec = { version = "3.6.1", default-features = false, features = ["derive"] }
+scale-info = { version = "2.5.0", default-features = false, features = ["derive"] }
+log = { version = "0.4.17", default-features = false }
+
+# paritytech/substrate dependencies
+sp-std = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.43" }
+sp-arithmetic = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.43" }
+sp-io = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.43" }
+sp-core = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.43" }
+sp-runtime = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.43" }
+sp-weights = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.43" }
+frame-support = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.43" }
+frame-system = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.43" }
+
+# paritytech/polkadot dependencies
+xcm = { git = "https://github.com/paritytech/polkadot", default-features = false , branch = "release-v0.9.43" }
+xcm-executor = { git = "https://github.com/paritytech/polkadot", default-features = false , branch = "release-v0.9.43" }
