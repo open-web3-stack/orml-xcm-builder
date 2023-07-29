@@ -8,7 +8,7 @@ members = [
 [workspace.package]
 version = "0.9.43"
 edition = "2021"
-repository = "https://github.com/open-web3-stack/orml-xcm.git"
+repository = "https://github.com/open-web3-stack/orml-xcm-builder.git"
 
 [workspace.dependencies]
 parity-scale-codec = { version = "3.6.1", default-features = false, features = ["derive"] }
