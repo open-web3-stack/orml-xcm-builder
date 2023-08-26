@@ -2,4 +2,6 @@
 
 // XCM configurations for enabling Tinkernet XCMultisigs in Kusama and parachains.
 pub mod tinkernet_multisigs;
-pub use tinkernet_multisigs::{TinkernetMultisigAsAccountId, TinkernetMultisigAsNativeOrigin};
+pub use tinkernet_multisigs::{
+    TinkernetMultisigAsAccountId, TinkernetMultisigAsNativeOrigin, TinkernetMultisigMultiLocation,
+};
