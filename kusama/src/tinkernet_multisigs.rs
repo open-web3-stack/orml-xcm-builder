@@ -1,4 +1,4 @@
-use frame_support::traits::OriginTrait;
+use frame_support::traits::{Contains, OriginTrait};
 use parity_scale_codec::{Decode, Encode};
 use sp_core::H256;
 use sp_io::hashing::blake2_256;
@@ -12,6 +12,24 @@ const TINKERNET_PARA_ID: u32 = 2125;
 
 /// Tinkernet Multisig pallet instance used when matching Multisig MultiLocations.
 const TINKERNET_MULTISIG_PALLET: u8 = 71;
+
+/// Tinkernet Multisig MultiLocation matcher implementing Contains.
+pub struct TinkernetMultisigMultiLocation;
+impl Contains<MultiLocation> for TinkernetMultisigMultiLocation {
+    fn contains(t: &MultiLocation) -> bool {
+        matches!(
+            t,
+            MultiLocation {
+                parents: 0 | 1,
+                interior: Junctions::X3(
+                    Junction::Parachain(TINKERNET_PARA_ID),
+                    Junction::PalletInstance(TINKERNET_MULTISIG_PALLET),
+                    Junction::GeneralIndex(_)
+                )
+            }
+        )
+    }
+}
 
 /// Constant derivation function for Tinkernet Multisigs.
 /// Uses the Tinkernet genesis hash as a salt.
@@ -98,6 +116,14 @@ mod tests {
         Junctions::X3,
         MultiLocation,
     };
+
+    #[test]
+    fn matches_multilocation() {
+        assert!(TinkernetMultisigMultiLocation::contains(&MultiLocation {
+            parents: 1,
+            interior: X3(Parachain(2125), PalletInstance(71), GeneralIndex(0)),
+        }))
+    }
 
     #[test]
     fn accountid32() {
